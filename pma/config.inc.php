@@ -5,7 +5,7 @@ $mode = BasicAuth::MODE_COOKIE;
 BasicAuth::addHtmlHeaders($commonHeaders);
 BasicAuth::test(array(
     '[[pma_user]]' => '[[pma_pass]]'
-), $message = "Login to pma",  $mode, $salt='[[pma_cookie]]');
+), $message = "Login to pma",  $mode, $salt='pma');
 
 
 /* vim: set expandtab sw=4 ts=4 sts=4: */
