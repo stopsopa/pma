@@ -1,5 +1,13 @@
 <?php
-require_once 'basic_auth.php';
+require_once('basic_auth_lib.php');
+
+$mode = BasicAuth::MODE_COOKIE;
+BasicAuth::addHtmlHeaders($commonHeaders);
+BasicAuth::test(array(
+    '[[pma_user]]' => '[[pma_pass]]'
+), $message = "Login to pma",  $mode, $salt='[[pma_cookie]]');
+
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * phpMyAdmin sample configuration, you can use it as base for
