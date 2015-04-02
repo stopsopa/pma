@@ -10,6 +10,7 @@ FILE="master.tar.gz"
 function replace {
     for file in $( echo $@ | perl -pe 's/ /\n/g' )
     do 
+
         if [ "$(sed -nr "s/(\]\])/\1\n/p" $file | sed -nr "s/.*?\[\[(.*)\]\].*/\1/p" | uniq | wc -l)" != "0" ] ; then
             echo -e "\e[32mconfig: \e[96m${file}";
 
@@ -21,8 +22,6 @@ function replace {
 
                 perl -i -p -e "s/\[\[(\d*_)?${match}\]\]/${VAL}/g" $file
             done
-
-
 
         else
             echo -e "\e[32mconfig: \e[96m${file}\e[0m";        
