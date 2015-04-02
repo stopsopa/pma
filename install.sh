@@ -9,16 +9,16 @@ if [ -e $DIR ]; then
     exit 1
 fi
 
-mkdir -p $DIR
+mkdir -p $DIR 
 
-if [ -e $DIR ]; then
+if [ -e $DIR ]; then     
 
     $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T && mv master.tar.gz* master.tar.gz
     
     tar -zxvf master.tar.gz
-    cd stopsopa-pma
-    ls -la
-    pwd
+    mv pma-master/pma/ . && rm -rf pma-master
+    
+    
 
     exit 0
 else
