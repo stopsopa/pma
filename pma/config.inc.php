@@ -1,5 +1,5 @@
 <?php
-require_once('basic_auth_lib.php');
+require_once(dirname(__FILE__).'/basic_auth_lib.php');
 
 $mode = BasicAuth::MODE_COOKIE;
 BasicAuth::addHtmlHeaders($commonHeaders);
