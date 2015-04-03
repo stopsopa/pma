@@ -18,7 +18,7 @@ function replace {
             do 
                 printf "\e[32m${match} \e[33m:\e[0m";
 
-                read -r VAL
+                read VAL </dev/tty
 
                 perl -i -p -e "s/\[\[(\d*_)?${match}\]\]/${VAL}/g" $file
             done
