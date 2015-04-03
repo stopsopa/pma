@@ -30,14 +30,6 @@ function replace {
     done
 }
 
-    #LIST="$(for i in $(find pma -maxdepth 1 -type f -name "*.php" -not -path "pma/basic_auth_lib.php"); do     if [ $(perl -ne 'print if /\[\[.*\]\]/' $i | wc -l) != 0 ] ; then echo $i; fi     ; done | perl -pe 's/\n/ /g')"
-
-    #replace $LIST
-
-#exit 0
-
-
-
 if [ -e $DIR ]; then
     echo -e "\e[31mJest już katalog '$DIR'\e[m"
     exit 1
@@ -48,10 +40,10 @@ mkdir -p $DIR
 if [ -e $DIR ]; then     
 
     echo -e "\e[32mDownload pma ...\e[32m";
-    $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T --append-output=/dev/null && mv master.tar.gz* master.tar.gz
+    $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T && mv master.tar.gz* master.tar.gz
     
     tar -zxvf master.tar.gz &> /dev/null
-    $(mv pma-master/pma/ . && rm -rf pma-master && rm master.tar.gz) &> /dev/null  
+    mv pma-master/pma/ . && rm -rf pma-master && rm master.tar.gz
 
     LIST="$(for i in $(find pma -maxdepth 1 -type f -name "*.php" -not -path "pma/basic_auth_lib.php"); do     if [ $(perl -ne 'print if /\[\[.*\]\]/' $i | wc -l) != 0 ] ; then echo $i; fi     ; done | perl -pe 's/\n/ /g')"
 
