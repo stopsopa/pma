@@ -16,9 +16,9 @@ function replace {
 
             for match in $(sed -nr "s/(\]\])/\1\n/gp" $file | sed -nr "s/.*?\[\[(.*)\]\].*/\1/p" | sort | uniq)
             do 
-                printf "\e[32m${match} \e[33m:\e[0m ";
+                printf "\e[32m${match} \e[33m:\e[0m";
 
-                read VAL
+                read -r VAL
 
                 perl -i -p -e "s/\[\[(\d*_)?${match}\]\]/${VAL}/g" $file
             done
