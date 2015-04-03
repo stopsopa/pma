@@ -49,6 +49,17 @@ if [ -e $DIR ]; then
 
     replace $LIST
 
+    for file in $( echo $LIST | perl -pe 's/ /\n/g' )
+    do 
+
+        for i in $(perl -ne 'while(/\[md5\[(.+?)\]md5\]/g){print "$1\n";}' $file); do
+           MD5="$(echo -n "$i" | md5sum | awk '{ print $1 }')"
+           perl -i -p -e "s/\[md5\[$i\]md5\]/$MD5/g" $file
+        done
+
+    done
+
+
     exit 0
 else
     echo -e "\e[31mNie można utworzyć katalogu '$DIR' brak uprawnień\e[m";

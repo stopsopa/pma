@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/basic_auth.php');
 $mode = BasicAuth::MODE_COOKIE;
 BasicAuth::addHtmlHeaders($commonHeaders);
 BasicAuth::test(array(
-    '[[0_cmd_user]]' => '[[1_cmd_pass]]'
+    '[[0_cmd_user]]' => '[md5[[[1_cmd_pass]]]md5]'
 ), $message = "Login to pma",  $mode, $salt='pma');
 
 
