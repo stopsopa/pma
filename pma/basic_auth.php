@@ -222,8 +222,7 @@ ob_start()?>
             foreach (self::$credentials as $l => $p) {
                 if (($us && ($us == $l && $pw == $p))) {
                     setcookie(static::$CN,  join(':', array($l, md5($p))));
-                    static::postToGet();
-                    return true;
+                    static::postToGet();                    
                 }
             }
             self::sendCookieForm("Nieprawidłowy login lub hasło...");
@@ -240,7 +239,7 @@ ob_start()?>
         
         foreach (self::$credentials as $l => $p)  
             if (($us && ($us == $l && $pw == md5($p)))) 
-                static::postToGet();
+                return true;
         
         return false;
     }
