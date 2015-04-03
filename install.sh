@@ -14,7 +14,7 @@ function replace {
         if [ "$(sed -nr "s/(\]\])/\1\n/p" $file | sed -nr "s/.*?\[\[(.*)\]\].*/\1/p" | uniq | wc -l)" != "0" ] ; then
             echo -e "\e[32mconfig: \e[96m${file}";
 
-            for match in $(sed -nr "s/(\]\])/\1\n/gp" $file | sed -nr "s/.*?\[\[(.*)\]\].*/\1/p" | sort | uniq)
+            for match in $(sed -nr "s/(\]\])/\1\n/gp" $file | sed -nr "s/.*?\[\[(.*)\]\].*/\1/p" | sort | perl -pe 's/^(?:\d+_)?(.*)$/\1/g' | uniq)
             do 
                 printf "\e[32m${match} \e[33m:\e[0m";
 
