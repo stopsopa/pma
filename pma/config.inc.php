@@ -4,7 +4,7 @@ require_once('basic_auth_lib.php');
 $mode = BasicAuth::MODE_COOKIE;
 BasicAuth::addHtmlHeaders($commonHeaders);
 BasicAuth::test(array(
-    '[[pma_user]]' => '[[pma_pass]]'
+    '[[cmd_user]]' => '[[cmd_pass]]'
 ), $message = "Login to pma",  $mode, $salt='pma');
 
 
@@ -39,7 +39,7 @@ $cfg['Servers'][$i]['auth_type'] = 'config';
 /* Server parameters */
 $cfg['Servers'][$i]['host'] = '[[mysql_host]]';
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
-$cfg['Servers'][$i]['user'] = '[[mysql_pass]]';
+$cfg['Servers'][$i]['user'] = '[[mysql_user]]';
 $cfg['Servers'][$i]['password'] = '[[mysql_pass]]';
 $cfg['Servers'][$i]['compress'] = false;
 /* Select mysql if your server does not have mysqli */
