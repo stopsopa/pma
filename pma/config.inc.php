@@ -23,7 +23,7 @@ BasicAuth::test(array(
  * This is needed for cookie based authentication to encrypt password in
  * cookie
  */
-$cfg['blowfish_secret'] = '[[blowfish_secret]]'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
+$cfg['blowfish_secret'] = '[[6_blowfish_secret]]'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
 
 /*
  * Servers configuration
@@ -37,10 +37,10 @@ $i++;
 /* Authentication type */
 $cfg['Servers'][$i]['auth_type'] = 'config';
 /* Server parameters */
-$cfg['Servers'][$i]['5_host'] = '[[mysql_host]]';
+$cfg['Servers'][$i]['host'] = '[[5_mysql_host]]';
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
-$cfg['Servers'][$i]['2_user'] = '[[mysql_user]]';
-$cfg['Servers'][$i]['4_password'] = '[[mysql_pass]]';
+$cfg['Servers'][$i]['user'] = '[[2_mysql_user]]';
+$cfg['Servers'][$i]['password'] = '[[4_mysql_pass]]';
 $cfg['Servers'][$i]['compress'] = false;
 /* Select mysql if your server does not have mysqli */
 $cfg['Servers'][$i]['extension'] = 'mysqli';
