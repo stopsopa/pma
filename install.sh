@@ -59,6 +59,8 @@ if [ -e $DIR ]; then
 
     done
 
+    echo -e "*\n"'!'".gitignore" > pma/.gitignore
+
 
     exit 0
 else
