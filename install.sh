@@ -47,7 +47,8 @@ mkdir -p $DIR
 
 if [ -e $DIR ]; then     
 
-    $($GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T && mv master.tar.gz* master.tar.gz &> /dev/null)
+    echo -e "\e[32mDownload pma ...\e[32m";
+    $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T --append-output=/dev/null && mv master.tar.gz* master.tar.gz
     
     tar -zxvf master.tar.gz &> /dev/null
     $(mv pma-master/pma/ . && rm -rf pma-master && rm master.tar.gz) &> /dev/null  
