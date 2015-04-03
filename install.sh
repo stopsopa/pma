@@ -18,7 +18,7 @@ function replace {
             do 
                 printf "\e[32m${match} \e[33m:\e[0m ";
 
-                read VAL
+                $(read VAL)
 
                 perl -i -p -e "s/\[\[(\d*_)?${match}\]\]/${VAL}/g" $file
             done
@@ -29,6 +29,12 @@ function replace {
 
     done
 }
+
+    #LIST="$(for i in $(find pma -maxdepth 1 -type f -name "*.php" -not -path "pma/basic_auth_lib.php"); do     if [ $(perl -ne 'print if /\[\[.*\]\]/' $i | wc -l) != 0 ] ; then echo $i; fi     ; done | perl -pe 's/\n/ /g')"
+
+    #replace $LIST
+
+#exit 0
 
 
 
@@ -41,7 +47,7 @@ mkdir -p $DIR
 
 if [ -e $DIR ]; then     
 
-    $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T && mv master.tar.gz* master.tar.gz
+    $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T && mv master.tar.gz* master.tar.gz &> /dev/null
     
     tar -zxvf master.tar.gz &> /dev/null
     $(mv pma-master/pma/ . && rm -rf pma-master && rm master.tar.gz) &> /dev/null  
