@@ -1,4 +1,4 @@
-Pma:
+PHPMyAdmin:
 ====
 
 Pma package to quick install from linux cli
