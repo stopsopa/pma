@@ -1,5 +1,6 @@
 PHPMyAdmin:
 ====
+Change in readme:
 
 Pma package to quick install from linux cli
 
