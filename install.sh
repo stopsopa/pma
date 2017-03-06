@@ -3,7 +3,7 @@
 DIR="pma"
 GET="$(wget -help &> /dev/null && echo "wget" || echo "curl -O")";
 T="$(date +%Y-%m-%d-%H-%M-%S)"
-FILE="v0.0.1.tar.gz"
+VER="0.0.1"
 
 # przekazać listę np 'jeden dwa trzy' 
 # funkcja zamieni sobie spacje na entery i z tego zrobi listę iterowalną przez for
@@ -41,10 +41,10 @@ if [ -e $DIR ]; then
 
     echo -e "\e[32mDownload pma ...\e[0m";
 
-    $GET https://github.com/stopsopa/pma/archive/${FILE}?$T && mv ${FILE}* ${FILE}
+    $GET https://github.com/stopsopa/pma/archive/v${VER}.tar.gz?$T && mv v${VER}.tar.gz* v${VER}.tar.gz
     
-    tar -zxvf ${FILE}
-    mv pma-master/pma/ . && rm -rf pma-master && rm ${FILE}
+    tar -zxvf v${VER}.tar.gz
+    mv pma-${VER}/pma/ . && rm -rf pma-${VER} && rm v${VER}.tar.gz
 
     LIST="$(for i in $(find pma -maxdepth 1 -type f -name "*.php" -not -path "pma/basic_auth.php"); do     if [ $(perl -ne 'print if /\[\[.*\]\]/' $i | wc -l) != 0 ] ; then echo $i; fi     ; done | perl -pe 's/\n/ /g')"
 
