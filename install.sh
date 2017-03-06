@@ -3,7 +3,7 @@
 DIR="pma"
 GET="$(wget -help &> /dev/null && echo "wget" || echo "curl -O")";
 T="$(date +%Y-%m-%d-%H-%M-%S)"
-VER="0.0.1"
+VER="0.0.2"
 
 # przekazać listę np 'jeden dwa trzy' 
 # funkcja zamieni sobie spacje na entery i z tego zrobi listę iterowalną przez for

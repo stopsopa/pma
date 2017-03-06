@@ -1,87 +1,89 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Creates the database interface required for database interctions
+ * Creates the database interface required for database interactions
  * and add it to GLOBALS.
  *
  * @package PhpMyAdmin-DBI
  */
+use PMA\libraries\dbi\DBIDummy;
+use PMA\libraries\di\Container;
+use PMA\libraries\DatabaseInterface;
+use PMA\libraries\dbi\DBIMysql;
+use PMA\libraries\dbi\DBIMysqli;
+
 if (! defined('PHPMYADMIN')) {
     exit;
 }
 
-require_once './libraries/DatabaseInterface.class.php';
-
-$extension = null;
 if (defined('TESTSUITE')) {
     /**
      * For testsuite we use dummy driver which can fake some queries.
      */
-    include_once './libraries/dbi/DBIDummy.class.php';
-    $extension = new PMA_DBI_Dummy();
+    $extension = new DBIDummy();
 } else {
 
     /**
-     * check for requested extension
+     * First check for the mysqli extension, as it's the one recommended
+     * for the MySQL server's version that we support
+     * (if PHP 7+, it's the only one supported)
      */
-    $extensionName = $GLOBALS['cfg']['Server']['extension'];
-    if (! PMA_DatabaseInterface::checkDbExtension($extensionName)) {
+    $extension = 'mysqli';
+    if (!DatabaseInterface::checkDbExtension($extension)) {
 
-        // if it fails try alternative extension ...
-        // and display an error ...
-        $docurl = PMA_Util::getDocuLink('faq', 'faqmysql');
+        $docurl = PMA\libraries\Util::getDocuLink('faq', 'faqmysql');
         $doclink = sprintf(
             __('See %sour documentation%s for more information.'),
             '[a@' . $docurl  . '@documentation]',
             '[/a]'
         );
 
-        /**
-         * @todo add different messages for alternative extension
-         * and complete fail (no alternative extension too)
-         */
-        PMA_warnMissingExtension(
-            $extensionName,
-            false,
-            $doclink
-        );
-
-        if ($extensionName === 'mysql') {
-            $alternativ_extension = 'mysqli';
+        if (PHP_VERSION_ID < 70000) {
+            $extension = 'mysql';
+            if (! PMA\libraries\DatabaseInterface::checkDbExtension($extension)) {
+                // warn about both extensions missing and exit
+                PMA_warnMissingExtension(
+                    'mysqli',
+                    true,
+                    $doclink
+                );
+            } elseif (empty($_SESSION['mysqlwarning'])) {
+                trigger_error(
+                    __(
+                        'You are using the mysql extension which is deprecated in '
+                        . 'phpMyAdmin. Please consider installing the mysqli '
+                        . 'extension.'
+                    ) . ' ' . $doclink,
+                    E_USER_WARNING
+                );
+                // tell the user just once per session
+                $_SESSION['mysqlwarning'] = true;
+            }
         } else {
-            $alternativ_extension = 'mysql';
-        }
-
-        if (! PMA_DatabaseInterface::checkDbExtension($alternativ_extension)) {
-            // if alternative fails too ...
+            // mysql extension is not part of PHP 7+, so warn and exit
             PMA_warnMissingExtension(
-                $extensionName,
+                'mysqli',
                 true,
                 $doclink
             );
         }
-
-        $GLOBALS['cfg']['Server']['extension'] = $alternativ_extension;
-        unset($alternativ_extension);
     }
 
     /**
      * Including The DBI Plugin
      */
-    switch($GLOBALS['cfg']['Server']['extension']) {
+    switch($extension) {
     case 'mysql' :
-        include_once './libraries/dbi/DBIMysql.class.php';
-        $extension = new PMA_DBI_Mysql();
+        $extension = new DBIMysql();
         break;
     case 'mysqli' :
-        include_once './libraries/dbi/DBIMysqli.class.php';
-        $extension = new PMA_DBI_Mysqli();
-        break;
-    case 'drizzle' :
-        include_once './libraries/dbi/DBIDrizzle.class.php';
-        $extension = new PMA_DBI_Drizzle();
+        include_once 'libraries/dbi/DBIMysqli.lib.php';
+        $extension = new DBIMysqli();
         break;
     }
 }
-$GLOBALS['dbi'] = new PMA_DatabaseInterface($extension);
-?>
+$GLOBALS['dbi'] = new DatabaseInterface($extension);
+
+$container = Container::getDefaultContainer();
+$container->set('PMA_DatabaseInterface', $GLOBALS['dbi']);
+$container->alias('dbi', 'PMA_DatabaseInterface');

@@ -12,26 +12,43 @@ if (top != self) {
 // Messages
 //
 
-// stores hidden message ids
-var hiddenMessages = [];
-
 $(function () {
-    var hidden = hiddenMessages.length;
-    for (var i = 0; i < hidden; i++) {
-        $('#' + hiddenMessages[i]).css('display', 'none');
+
+    if (window.location.protocol === 'https:') {
+        $('#no_https').remove();
+    } else {
+        $('#no_https a').click(function () {
+            var old_location = window.location;
+            window.location.href = 'https:' + old_location.href.substring(old_location.protocol.length);
+            return false;
+        });
     }
-    if (hidden > 0) {
+
+    var hiddenmessages = $('.hiddenmessage');
+
+    if (hiddenmessages.length > 0) {
+        hiddenmessages.hide();
         var link = $('#show_hidden_messages');
         link.click(function (e) {
             e.preventDefault();
-            for (var i = 0; i < hidden; i++) {
-                $('#' + hiddenMessages[i]).show(500);
-            }
+            hiddenmessages.show();
             $(this).remove();
         });
-        link.html(link.html().replace('#MSG_COUNT', hidden));
+        link.html(link.html().replace('#MSG_COUNT', hiddenmessages.length));
         link.css('display', '');
     }
+});
+
+//set document width
+$(document).ready(function(){
+    width = 0;
+    $('ul.tabs li').each(function(){
+        width += $(this).width() + 10;
+    });
+    var contentWidth = width;
+    width += 250;
+    $('body').css('min-width', width);
+    $('.tabs_contents').css('min-width', contentWidth);
 });
 
 //
@@ -71,7 +88,7 @@ function ajaxValidate(parent, id, values)
         data: {
             token: parent.closest('form').find('input[name=token]').val(),
             id: id,
-            values: $.toJSON(values)
+            values: JSON.stringify(values)
         },
         success: function (response) {
             if (response === null) {
@@ -102,7 +119,7 @@ function ajaxValidate(parent, id, values)
 /**
  * Automatic form submission on change.
  */
-$('.autosubmit').live('change', function (e) {
+$(document).on('change', '.autosubmit', function (e) {
     e.target.form.submit();
 });
 

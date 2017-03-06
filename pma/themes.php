@@ -10,23 +10,21 @@
  * get some globals
  */
 require './libraries/common.inc.php';
-$response = PMA_Response::getInstance();
+$response = PMA\libraries\Response::getInstance();
 $response->getFooter()->setMinimal();
 $header = $response->getHeader();
 $header->setBodyId('bodythemes');
 $header->setTitle('phpMyAdmin - ' . __('Theme'));
-$header->disableMenu();
+$header->disableMenuAndConsole();
 
 $hash    = '#pma_' . preg_replace('/([0-9]*)\.([0-9]*)\..*/', '\1_\2', PMA_VERSION);
-$url     = PMA_linkURL('http://www.phpmyadmin.net/home_page/themes.php') . $hash;
+$url     = PMA_linkURL('https://www.phpmyadmin.net/themes/') . $hash;
 $output  = '<h1>phpMyAdmin - ' . __('Theme') . '</h1>';
 $output .= '<p>';
-$output .= '<a href="' . $url . '" class="_blank">';
+$output .= '<a href="' . $url . '" rel="noopener noreferrer" target="_blank">';
 $output .= __('Get more themes!');
 $output .= '</a>';
 $output .= '</p>';
 $output .= $_SESSION['PMA_Theme_Manager']->getPrintPreviews();
 
 $response->addHTML($output);
-
-?>
