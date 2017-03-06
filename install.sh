@@ -3,7 +3,7 @@
 DIR="pma"
 GET="$(wget -help &> /dev/null && echo "wget" || echo "curl -O")";
 T="$(date +%Y-%m-%d-%H-%M-%S)"
-FILE="master.tar.gz"
+FILE="v0.0.1.tar.gz"
 
 # przekazać listę np 'jeden dwa trzy' 
 # funkcja zamieni sobie spacje na entery i z tego zrobi listę iterowalną przez for
@@ -31,7 +31,7 @@ function replace {
 }
 
 if [ -e $DIR ]; then
-    echo -e "\e[31mJest już katalog '$DIR'\e[m"
+    echo -e "\e[31mDirectory '$DIR' already exist\e[m"
     exit 1
 fi
 
@@ -40,10 +40,11 @@ mkdir -p $DIR
 if [ -e $DIR ]; then     
 
     echo -e "\e[32mDownload pma ...\e[0m";
-    $GET https://github.com/stopsopa/pma/archive/master.tar.gz?$T && mv master.tar.gz* master.tar.gz
+
+    $GET https://github.com/stopsopa/pma/archive/${FILE}?$T && mv ${FILE}* ${FILE}
     
-    tar -zxvf master.tar.gz
-    mv pma-master/pma/ . && rm -rf pma-master && rm master.tar.gz
+    tar -zxvf ${FILE}
+    mv pma-master/pma/ . && rm -rf pma-master && rm ${FILE}
 
     LIST="$(for i in $(find pma -maxdepth 1 -type f -name "*.php" -not -path "pma/basic_auth.php"); do     if [ $(perl -ne 'print if /\[\[.*\]\]/' $i | wc -l) != 0 ] ; then echo $i; fi     ; done | perl -pe 's/\n/ /g')"
 
