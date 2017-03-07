@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="pma"
-GET="$(wget -help &> /dev/null && echo "wget" || echo "curl -O")";
+GET="$(wget -help &> /dev/null && echo "wget" || echo "curl -LOk")";
 T="$(date +%Y-%m-%d-%H-%M-%S)"
 VER="0.0.2"
 
