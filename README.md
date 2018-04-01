@@ -1,7 +1,13 @@
 PHPMyAdmin:
 ====
 
+
+Why?
+-
+
+
 Pma package to quick install from linux cli.
+(The way I used to install PMA before i started using Docker)
      
 Require php extension **mbstring, mysql** and **mcrypt**   
 
