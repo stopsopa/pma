@@ -29,7 +29,7 @@ Require php extension **mbstring, mysql** and **mcrypt**
      
 ---    
 
-Sometimes on dev invironment you can have no password to login to db, in this case just setup manually:
+Sometimes on dev environment you can have no password to login to db, in this case just setup manually:
 
 
      vim pma/config.inc.php
