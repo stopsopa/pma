@@ -1,3 +1,6 @@
+# DEPRECATED
+created in 2015, but I'll leave it here
+
 PHPMyAdmin:
 ====
 
